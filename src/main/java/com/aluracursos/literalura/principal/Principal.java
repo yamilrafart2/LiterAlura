@@ -9,9 +9,9 @@ import com.aluracursos.literalura.service.ConvierteDatos;
  */
 public class Principal {
 
-    private ConsumoAPI consumoAPI = new ConsumoAPI();
+    private final ConsumoAPI consumoAPI = new ConsumoAPI();
     private final String URL_BASE = "https://gutendex.com/books/";
-    private ConvierteDatos conversor = new ConvierteDatos();
+    private final ConvierteDatos conversor = new ConvierteDatos();
 
     public void mostrarMenu() {
 
