@@ -7,6 +7,8 @@ import com.aluracursos.literalura.repository.ILibroRepository;
 import com.aluracursos.literalura.service.ConsumoAPI;
 import com.aluracursos.literalura.service.ConvierteDatos;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -57,7 +59,7 @@ public class Principal {
                     case 2:
                         System.out.println("==============================================");
                         System.out.println("\n====================== 2. ====================");
-
+                        mostrarLibrosRegistrados();
                         System.out.println("==============================================");
                         break;
                     case 3:
@@ -91,6 +93,25 @@ public class Principal {
                         System.out.println("==============================================");
                 }
             }
+
+    }
+
+    /**
+     * Consulta la base de datos para obtener todos los libros registrados 
+     * y los ordena según cantidad de descargas y los muestra en la consola.
+     */
+    private void mostrarLibrosRegistrados() {
+        var listaLibros = repositorio.findAll();
+
+        if (!listaLibros.isEmpty()) {
+            System.out.println("CANTIDAD DE LIBROS REGISTRADOS: " + listaLibros.size());
+            listaLibros.stream()
+                    .sorted(Comparator.comparing(Libro::getTotalDescargas).reversed())
+                    .forEach(System.out::println);
+            ;
+        } else {
+            System.out.println("NO EXISTEN LIBROS REGISTRADOS!");
+        }
 
     }
 
