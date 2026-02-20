@@ -9,7 +9,12 @@ import com.aluracursos.literalura.repository.ILibroRepository;
 import com.aluracursos.literalura.service.ConsumoAPI;
 import com.aluracursos.literalura.service.ConvierteDatos;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
@@ -45,6 +50,7 @@ public class Principal {
                         5 - LISTAR LIBROS POR IDIOMA
                         6 - GENERAR ESTADÍSTICAS DE DESCARGAS
                         7 - TOP 10 LIBROS MÁS DESCARGADOS
+                        8 - BUSCAR AUTOR POR NOMBRE
 
                         0 - SALIR
                         """
@@ -109,6 +115,12 @@ public class Principal {
                         mostrarTop10LibrosMasDescargados();
                         System.out.println("==============================================");
                         break;
+                    case 8:
+                        System.out.println("==============================================");
+                        System.out.println("\n====================== 8. ====================");
+                        buscarAutorPorNombre();
+                        System.out.println("==============================================");
+                        break;
                     case 0:
                         System.out.println("==============================================");
                         System.out.println("\n==============================================");
@@ -123,6 +135,24 @@ public class Principal {
                 }
             }
 
+    }
+
+    /**
+     * Solicita al usuario el nombre (o parte del nombre) de un autor,
+     * consulta la base de datos y muestra la información del autor si este
+     * se encuentra registrado.
+     */
+    private void buscarAutorPorNombre() {
+        System.out.print("INGRESE EL NOMBRE DEL AUTOR QUE DESEA BUSCAR: ");
+        var nombreAutor = teclado.nextLine();
+        Optional<Autor> autorBuscado = repositorioAutor.findByNombreContainingIgnoreCase(nombreAutor);
+
+        if (autorBuscado.isPresent()) {
+            System.out.println("AUTOR ENCONTRADO!");
+            System.out.println(autorBuscado.get());
+        } else {
+            System.out.println("AUTOR NO ENCONTRADO!");
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repositorio de Spring Data JPA para la entidad Autor.
@@ -31,4 +32,14 @@ public interface IAutorRepository extends JpaRepository<Autor, Long> {
      */
     @Query("SELECT a FROM Autor a WHERE a.fechaNacimiento <= :anio AND (a.fechaFallecimiento >= :anio OR a.fechaFallecimiento IS NULL)")
     List<Autor> getAutoresVivosEnAnio(Integer anio);
+
+    /**
+     * Busca un autor en la base de datos cuyo nombre contenga la cadena de texto
+     * proporcionada, ignorando diferencias entre mayúsculas y minúsculas.
+     * Utiliza Derived Queries de Spring Data JPA.
+     *
+     * @param nombre Cadena de texto a buscar dentro del nombre del autor.
+     * @return Un Optional que contiene el Autor si se encuentra, o vacío si no.
+     */
+    Optional<Autor> findByNombreContainingIgnoreCase(String nombre);
 }
