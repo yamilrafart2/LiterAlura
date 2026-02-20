@@ -62,4 +62,14 @@ public interface IAutorRepository extends JpaRepository<Autor, Long> {
      * @return Una lista de autores nacidos en dicho año.
      */
     List<Autor> findByFechaNacimiento(Integer anio);
+
+    /**
+     * Busca autores en la base de datos que hayan nacido en un año específico.
+     * Utiliza JPQL (Java Persistence Query Language) para realizar la consulta.
+     *
+     * @param anio Año exacto de nacimiento a consultar.
+     * @return Una lista de autores nacidos en dicho año.
+     */
+    @Query("SELECT a FROM Autor a WHERE a.fechaNacimiento = :anio")
+    List<Autor> getAutoresPorFechaNacimiento(Integer anio);
 }

@@ -166,7 +166,7 @@ public class Principal {
         }
         // --- FIN DEL MANEJO DE ERRORES ---
 
-        List<Autor> autoresEncontrados = repositorioAutor.findByFechaNacimiento(anioBuscado);
+        List<Autor> autoresEncontrados = repositorioAutor.getAutoresPorFechaNacimiento(anioBuscado);
         if (!autoresEncontrados.isEmpty()) {
             System.out.println("LA CANTIDAD DE AUTORES QUE NACIERON EN EL AÑO " + anioBuscado + " ES DE: " +  autoresEncontrados.size());
             autoresEncontrados.stream()
