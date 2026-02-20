@@ -1,14 +1,15 @@
 package com.aluracursos.literalura.principal;
 
+import com.aluracursos.literalura.model.Autor;
 import com.aluracursos.literalura.model.DatosLibro;
 import com.aluracursos.literalura.model.DatosResultados;
 import com.aluracursos.literalura.model.Libro;
+import com.aluracursos.literalura.repository.IAutorRepository;
 import com.aluracursos.literalura.repository.ILibroRepository;
 import com.aluracursos.literalura.service.ConsumoAPI;
 import com.aluracursos.literalura.service.ConvierteDatos;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -21,9 +22,13 @@ public class Principal {
     private final String URL_BASE = "https://gutendex.com/books/";
     private final ConvierteDatos conversor = new ConvierteDatos();
     private final Scanner teclado = new Scanner(System.in);
-    private final ILibroRepository repositorio;
+    private final ILibroRepository repositorioLibro;
+    private final IAutorRepository repositorioAutor;
 
-    public Principal(ILibroRepository repository) { this.repositorio = repository; }
+    public Principal(ILibroRepository repositoryLibro,  IAutorRepository repositoryAutor) {
+        this.repositorioLibro = repositoryLibro;
+        this.repositorioAutor = repositoryAutor;
+    }
 
     /**
      * Muestra el menú principal de la aplicación y gestiona el flujo de opciones
@@ -65,7 +70,7 @@ public class Principal {
                     case 3:
                         System.out.println("==============================================");
                         System.out.println("\n====================== 3. ====================");
-
+                        mostrarAutoresRegistrados();
                         System.out.println("==============================================");
                         break;
                     case 4:
@@ -97,11 +102,30 @@ public class Principal {
     }
 
     /**
+     * Consulta la base de datos para obtener todos los autores registrados
+     * y los ordena según el nombre y los muestra en la consola.
+     */
+    private void mostrarAutoresRegistrados() {
+        var listaAutores = repositorioAutor.findAll();
+
+        if (!listaAutores.isEmpty()) {
+            System.out.println("CANTIDAD DE AUTORES REGISTRADOS: " + listaAutores.size());
+            listaAutores.stream()
+                    .sorted(Comparator.comparing(Autor::getNombre))
+                    .forEach(System.out::println)
+            ;
+        } else {
+            System.out.println("NO EXISTE AUTORES REGISTRADOS!");
+        }
+
+    }
+
+    /**
      * Consulta la base de datos para obtener todos los libros registrados 
      * y los ordena según cantidad de descargas y los muestra en la consola.
      */
     private void mostrarLibrosRegistrados() {
-        var listaLibros = repositorio.findAll();
+        var listaLibros = repositorioLibro.findAll();
 
         if (!listaLibros.isEmpty()) {
             System.out.println("CANTIDAD DE LIBROS REGISTRADOS: " + listaLibros.size());
@@ -127,7 +151,7 @@ public class Principal {
             System.out.println(datosLibro.get() + "\n");
 
             Libro libro = new Libro(datosLibro.get());
-            repositorio.save(libro);
+            repositorioLibro.save(libro);
             System.out.println("LIBRO REGISTRADO!");
             System.out.println(libro + "\n");
 

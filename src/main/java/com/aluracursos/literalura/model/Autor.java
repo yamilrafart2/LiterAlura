@@ -11,6 +11,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Entidad JPA que representa la tabla de autores en la base de datos PostgreSQL.
@@ -43,10 +44,26 @@ public class Autor {
 
     @Override
     public String toString() {
-        return "NOMBRE = " + nombre + '\'' +
-                ", FECHA DE NACIMIENTO = " + fechaNacimiento +
-                ", FECHA DE FALLECIMIENTO = " + fechafallecimiento +
-                ", LISTA DE LIBROS = " + listaLibros
+        String librosStr = (listaLibros != null && !listaLibros.isEmpty())
+                ? listaLibros.stream()
+                .map(Libro::getTitulo)
+                .collect(Collectors.joining(", ", "[", "]"))
+                : "[Ningún libro registrado]"
+        ;
+
+        return """
+                ---------- AUTOR ----------
+                Nombre: %s
+                Fecha de nacimiento: %s
+                Fecha de fallecimiento: %s
+                Libros: %s
+                ---------------------------
+                """.formatted(
+                nombre,
+                fechaNacimiento != null ? fechaNacimiento : "Desconocida",
+                fechafallecimiento != null ? fechafallecimiento : "Desconocida",
+                librosStr
+        )
         ;
     }
 
