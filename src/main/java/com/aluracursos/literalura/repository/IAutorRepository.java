@@ -42,4 +42,15 @@ public interface IAutorRepository extends JpaRepository<Autor, Long> {
      * @return Un Optional que contiene el Autor si se encuentra, o vacío si no.
      */
     Optional<Autor> findByNombreContainingIgnoreCase(String nombre);
+
+    /**
+     * Busca un autor en la base de datos cuyo nombre contenga la cadena de texto
+     * proporcionada, ignorando diferencias entre mayúsculas y minúsculas.
+     * Utiliza JPQL (Java Persistence Query Language) con el operador ILIKE de PostgreSQL.
+     *
+     * @param nombre Cadena de texto a buscar dentro del nombre del autor.
+     * @return Un Optional que contiene el Autor si se encuentra, o vacío si no.
+     */
+    @Query("SELECT a FROM Autor a WHERE a.nombre ILIKE %:nombre%")
+    Optional<Autor> getAutorPorNombre(String nombre);
 }

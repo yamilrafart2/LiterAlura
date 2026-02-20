@@ -145,7 +145,7 @@ public class Principal {
     private void buscarAutorPorNombre() {
         System.out.print("INGRESE EL NOMBRE DEL AUTOR QUE DESEA BUSCAR: ");
         var nombreAutor = teclado.nextLine();
-        Optional<Autor> autorBuscado = repositorioAutor.findByNombreContainingIgnoreCase(nombreAutor);
+        Optional<Autor> autorBuscado = repositorioAutor.getAutorPorNombre(nombreAutor);
 
         if (autorBuscado.isPresent()) {
             System.out.println("AUTOR ENCONTRADO!");
