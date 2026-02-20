@@ -44,6 +44,7 @@ public class Principal {
                         4 - LISTAR AUTORES VIVOS EN UN DETERMINADO AÑO
                         5 - LISTAR LIBROS POR IDIOMA
                         6 - GENERAR ESTADÍSTICAS DE DESCARGAS
+                        7 - TOP 10 LIBROS MÁS DESCARGADOS
 
                         0 - SALIR
                         """
@@ -102,6 +103,12 @@ public class Principal {
                         mostrarEstadisticasDescargas();
                         System.out.println("==============================================");
                         break;
+                    case 7:
+                        System.out.println("==============================================");
+                        System.out.println("\n====================== 7. ====================");
+                        mostrarTop10LibrosMasDescargados();
+                        System.out.println("==============================================");
+                        break;
                     case 0:
                         System.out.println("==============================================");
                         System.out.println("\n==============================================");
@@ -116,6 +123,25 @@ public class Principal {
                 }
             }
 
+    }
+
+    /**
+     * Consulta la base de datos para obtener los 10 libros con mayor número
+     * de descargas y los muestra en la consola.
+     */
+    private void mostrarTop10LibrosMasDescargados() {
+        List<Libro> listaLibros = repositorioLibro.findAll();
+
+        if (listaLibros.isEmpty()) {
+            System.out.println("NO EXISTEN LIBROS REGISTRADOS!");
+        } else {
+            System.out.println("---------- TOP 10 LIBROS MÁS DESCARGADOS ----------");
+            listaLibros.stream()
+                    .sorted(Comparator.comparing(Libro::getTotalDescargas).reversed())
+                    .limit(10)
+                    .forEach(System.out::println)
+            ;
+        }
     }
 
     /**
