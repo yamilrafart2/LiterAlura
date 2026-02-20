@@ -2,6 +2,7 @@ package com.aluracursos.literalura.repository;
 
 import com.aluracursos.literalura.model.Autor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -21,4 +22,13 @@ public interface IAutorRepository extends JpaRepository<Autor, Long> {
      */
     List<Autor> findByFechaNacimientoLessThanEqualAndFechaFallecimientoGreaterThanEqual(Integer fechaNacimiento, Integer fechaFallecimiento);
 
+    /**
+     * Busca autores en la base de datos que estuvieran vivos en un año específico.
+     * Utiliza JPQL (Java Persistence Query Language) para una sintaxis más limpia y legible.
+     *
+     * @param anio Año a consultar.
+     * @return Una lista de autores que cumplen con la condición.
+     */
+    @Query("SELECT a FROM Autor a WHERE a.fechaNacimiento <= :anio AND (a.fechaFallecimiento >= :anio OR a.fechaFallecimiento IS NULL)")
+    List<Autor> getAutoresVivosEnAnio(Integer anio);
 }

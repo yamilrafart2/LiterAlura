@@ -110,8 +110,9 @@ public class Principal {
     private void listarAutoresVivosEnAnio() {
         System.out.print("INGRESE EL AÑO EN EL QUE DESEA BUSCAR AUTORES VIVOS: ");
         var anioBuscado =  teclado.nextInt();
+        teclado.nextLine();
 
-        List<Autor> autoresVivos = repositorioAutor.findByFechaNacimientoLessThanEqualAndFechaFallecimientoGreaterThanEqual(anioBuscado, anioBuscado);
+        List<Autor> autoresVivos = repositorioAutor.getAutoresVivosEnAnio(anioBuscado);
         if (!autoresVivos.isEmpty()) {
             System.out.println("LA CANTIDAD DE AUTORES VIVOS EN EL AÑO " + anioBuscado + " ES DE: " +  autoresVivos.size());
             autoresVivos.stream()
