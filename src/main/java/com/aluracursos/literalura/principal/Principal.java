@@ -10,6 +10,7 @@ import com.aluracursos.literalura.service.ConsumoAPI;
 import com.aluracursos.literalura.service.ConvierteDatos;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Clase principal que maneja la interacción con el usuario y el flujo de la aplicación.
@@ -42,6 +43,7 @@ public class Principal {
                         3 - LISTAR AUTORES REGISTRADOS
                         4 - LISTAR AUTORES VIVOS EN UN DETERMINADO AÑO
                         5 - LISTAR LIBROS POR IDIOMA
+                        6 - GENERAR ESTADÍSTICAS DE DESCARGAS
 
                         0 - SALIR
                         """
@@ -94,6 +96,12 @@ public class Principal {
                         mostrarMenuIdiomas();
                         System.out.println("==============================================");
                         break;
+                    case 6:
+                        System.out.println("==============================================");
+                        System.out.println("\n====================== 6. ====================");
+                        mostrarEstadisticasDescargas();
+                        System.out.println("==============================================");
+                        break;
                     case 0:
                         System.out.println("==============================================");
                         System.out.println("\n==============================================");
@@ -108,6 +116,25 @@ public class Principal {
                 }
             }
 
+    }
+
+    /**
+     * Calcula y muestra estadísticas de descargas de todos los libros
+     * almacenados en la base de datos utilizando DoubleSummaryStatistics.
+     * Los cálculos incluyen: promedio, máximo, mínimo y total de libros evaluados.
+     */
+    private void mostrarEstadisticasDescargas() {
+        List<Libro> listaLibros = repositorioLibro.findAll();
+        DoubleSummaryStatistics estadisticas = listaLibros.stream()
+                .filter(l -> l.getTotalDescargas() > 0)
+                .collect(Collectors.summarizingDouble(Libro::getTotalDescargas))
+        ;
+
+        System.out.println("ESTADÍSTICAS DE TODOS LOS LIBROS REGISTRADOS:");
+        System.out.println("CANTIDAD MEDIA DE DESCARGAS: " + estadisticas.getAverage());
+        System.out.println("CANTIDAD MÁXIMA DE DESCARGAS: " + estadisticas.getMax());
+        System.out.println("CANTIDAD MÍNIMA DE DESCARGAS: " + estadisticas.getMin());
+        System.out.println("CANTIDAD DE LIBROS EVALUADOS PARA CALCULAR LAS ESTADÍSTICAS: " + estadisticas.getCount());
     }
 
     /**
