@@ -22,6 +22,13 @@ public interface ILibroRepository extends JpaRepository<Libro, Long> {
      */
     List<Libro> findAllByIdioma(String idioma);
 
+    /**
+     * Busca libros en la base de datos que estén escritos en un idioma especificado.
+     * Utiliza JPQL (Java Persistence Query Language) para una sintaxis más limpia y legible.
+     *
+     * @param idioma idioma a consultar.
+     * @return Una lista de libros que cumplen con la condición.
+     */
     @Query("SELECT l FROM Libro l WHERE l.idioma ILIKE :idioma")
     List<Libro> getLibrosEscritosEnIdioma(String idioma);
 
