@@ -10,6 +10,7 @@ import com.aluracursos.literalura.service.ConsumoAPI;
 import com.aluracursos.literalura.service.ConvierteDatos;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -76,7 +77,7 @@ public class Principal {
                     case 4:
                         System.out.println("==============================================");
                         System.out.println("\n====================== 4. ====================");
-
+                        listarAutoresVivosEnAnio();
                         System.out.println("==============================================");
                         break;
                     case 5:
@@ -98,6 +99,28 @@ public class Principal {
                         System.out.println("==============================================");
                 }
             }
+
+    }
+
+    /**
+     * Solicita al usuario un año y busca en la base de datos los autores que
+     * se encontraban con vida durante ese período. Los resultados se muestran
+     * ordenados del más reciente al más antiguo.
+     */
+    private void listarAutoresVivosEnAnio() {
+        System.out.print("INGRESE EL AÑO EN EL QUE DESEA BUSCAR AUTORES VIVOS: ");
+        var anioBuscado =  teclado.nextInt();
+
+        List<Autor> autoresVivos = repositorioAutor.findByFechaNacimientoLessThanEqualAndFechaFallecimientoGreaterThanEqual(anioBuscado, anioBuscado);
+        if (!autoresVivos.isEmpty()) {
+            System.out.println("LA CANTIDAD DE AUTORES VIVOS EN EL AÑO " + anioBuscado + " ES DE: " +  autoresVivos.size());
+            autoresVivos.stream()
+                    .sorted(Comparator.comparing(Autor::getFechaNacimiento).reversed())
+                    .forEach(System.out::println)
+            ;
+        } else {
+            System.out.println("NO EXISTEN AUTORES REGISTRADOS QUE ESTÉN VIVOS EN EL AÑO " + anioBuscado + "!");
+        }
 
     }
 
