@@ -9,10 +9,7 @@ import com.aluracursos.literalura.repository.ILibroRepository;
 import com.aluracursos.literalura.service.ConsumoAPI;
 import com.aluracursos.literalura.service.ConvierteDatos;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Clase principal que maneja la interacción con el usuario y el flujo de la aplicación.
@@ -52,8 +49,19 @@ public class Principal {
                 System.out.println("\n==================== MENÚ ====================");
                 System.out.println(menu);
                 System.out.print("INGRESE UNA OPCIÓN: ");
-                opcion = teclado.nextInt();
-                teclado.nextLine();
+                // --- INICIO DEL MANEJO DE ERRORES ---
+                try {
+                    opcion = teclado.nextInt();
+                    teclado.nextLine();
+                } catch (InputMismatchException e) {
+                    System.out.println("==============================================");
+                    System.out.println("\n==============================================");
+                    System.out.println("ERROR: POR FAVOR, INGRESE UNA OPCIÓN VÁLIDA!");
+                    System.out.println("==============================================");
+                    teclado.nextLine();
+                    continue;
+                }
+                // --- FIN DEL MANEJO DE ERRORES ---
 
                 switch (opcion) {
                     case 1:
@@ -95,7 +103,7 @@ public class Principal {
                     default:
                         System.out.println("==============================================");
                         System.out.println("\n==============================================");
-                        System.out.println("OPCIÓN INVÁLIDA!");
+                        System.out.println("ERROR: POR FAVOR, INGRESE UNA OPCIÓN VÁLIDA!");
                         System.out.println("==============================================");
                 }
             }
@@ -119,7 +127,18 @@ public class Principal {
         ;
 
         System.out.print("INGRESE LA SIGLA DEL IDIOMA EN EL QUE DESEA BUSCAR LIBROS: ");
-        var siglaIdioma = teclado.nextLine();
+        var siglaIdioma = teclado.nextLine().trim();
+
+        // --- INICIO DE VALIDACIÓN ---
+        List<String> idiomasValidos = List.of("es", "en", "fr", "pt");
+
+        if (!idiomasValidos.contains(siglaIdioma.toLowerCase())) {
+            System.out.println("==============================================");
+            System.out.println("ERROR: IDIOMA NO RECONOCIDO. POR FAVOR, INGRESE ES, EN, FR O PT!");
+            System.out.println("==============================================");
+            return;
+        }
+        // --- FIN DE VALIDACIÓN ---
 
         List<Libro> listaLibros = repositorioLibro.getLibrosEscritosEnIdioma(siglaIdioma.toLowerCase());
         if (!listaLibros.isEmpty()) {
@@ -140,8 +159,20 @@ public class Principal {
      */
     private void listarAutoresVivosEnAnio() {
         System.out.print("INGRESE EL AÑO EN EL QUE DESEA BUSCAR AUTORES VIVOS: ");
-        var anioBuscado =  teclado.nextInt();
-        teclado.nextLine();
+        int anioBuscado;
+        // --- INICIO DEL MANEJO DE ERRORES ---
+        try {
+            anioBuscado = teclado.nextInt();
+            teclado.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("==============================================");
+            System.out.println("\n==============================================");
+            System.out.println("ERROR: EL AÑO DEBE SER UN NÚMERO (EJEMPLO: 1800)!");
+            System.out.println("==============================================");
+            teclado.nextLine();
+            return;
+        }
+        // --- FIN DEL MANEJO DE ERRORES ---
 
         List<Autor> autoresVivos = repositorioAutor.getAutoresVivosEnAnio(anioBuscado);
         if (!autoresVivos.isEmpty()) {
