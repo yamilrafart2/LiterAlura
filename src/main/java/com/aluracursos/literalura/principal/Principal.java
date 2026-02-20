@@ -51,6 +51,7 @@ public class Principal {
                         6 - GENERAR ESTADÍSTICAS DE DESCARGAS
                         7 - TOP 10 LIBROS MÁS DESCARGADOS
                         8 - BUSCAR AUTOR POR NOMBRE
+                        9 - BUSCAR AUTORES POR AÑO DE NACIMIENTO
 
                         0 - SALIR
                         """
@@ -121,6 +122,12 @@ public class Principal {
                         buscarAutorPorNombre();
                         System.out.println("==============================================");
                         break;
+                    case 9:
+                        System.out.println("==============================================");
+                        System.out.println("\n====================== 9. ====================");
+                        buscarAutorPorAnioNacimiento();
+                        System.out.println("==============================================");
+                        break;
                     case 0:
                         System.out.println("==============================================");
                         System.out.println("\n==============================================");
@@ -135,6 +142,40 @@ public class Principal {
                 }
             }
 
+    }
+
+    /**
+     * Solicita al usuario un año específico y busca en la base de datos a los
+     * autores que hayan nacido en ese año. Los resultados se muestran ordenados
+     * alfabéticamente por nombre.
+     */
+    private void buscarAutorPorAnioNacimiento() {
+        System.out.print("INGRESE EL AÑO DE NACIMIENTO EN EL QUE DESEA BUSCAR AUTORES: ");
+        int anioBuscado;
+        // --- INICIO DEL MANEJO DE ERRORES ---
+        try {
+            anioBuscado = teclado.nextInt();
+            teclado.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("==============================================");
+            System.out.println("\n==============================================");
+            System.out.println("ERROR: EL AÑO DEBE SER UN NÚMERO (EJEMPLO: 1800)!");
+            System.out.println("==============================================");
+            teclado.nextLine();
+            return;
+        }
+        // --- FIN DEL MANEJO DE ERRORES ---
+
+        List<Autor> autoresEncontrados = repositorioAutor.findByFechaNacimiento(anioBuscado);
+        if (!autoresEncontrados.isEmpty()) {
+            System.out.println("LA CANTIDAD DE AUTORES QUE NACIERON EN EL AÑO " + anioBuscado + " ES DE: " +  autoresEncontrados.size());
+            autoresEncontrados.stream()
+                    .sorted(Comparator.comparing(Autor::getNombre))
+                    .forEach(System.out::println)
+            ;
+        } else {
+            System.out.println("NO EXISTEN AUTORES REGISTRADOS QUE HAYAN NACIDO EN EL AÑO " + anioBuscado + "!");
+        }
     }
 
     /**

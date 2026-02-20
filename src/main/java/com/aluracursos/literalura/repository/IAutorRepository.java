@@ -53,4 +53,13 @@ public interface IAutorRepository extends JpaRepository<Autor, Long> {
      */
     @Query("SELECT a FROM Autor a WHERE a.nombre ILIKE %:nombre%")
     Optional<Autor> getAutorPorNombre(String nombre);
+
+    /**
+     * Busca autores en la base de datos que hayan nacido en un año específico.
+     * Utiliza Derived Queries de Spring Data JPA.
+     *
+     * @param anio Año exacto de nacimiento a consultar.
+     * @return Una lista de autores nacidos en dicho año.
+     */
+    List<Autor> findByFechaNacimiento(Integer anio);
 }
