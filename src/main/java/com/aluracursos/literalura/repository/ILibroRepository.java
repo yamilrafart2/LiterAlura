@@ -2,6 +2,7 @@ package com.aluracursos.literalura.repository;
 
 import com.aluracursos.literalura.model.Libro;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -20,5 +21,8 @@ public interface ILibroRepository extends JpaRepository<Libro, Long> {
      * @return Lista de libros escritos en el idioma indicado.
      */
     List<Libro> findAllByIdioma(String idioma);
+
+    @Query("SELECT l FROM Libro l WHERE l.idioma ILIKE :idioma")
+    List<Libro> getLibrosEscritosEnIdioma(String idioma);
 
 }

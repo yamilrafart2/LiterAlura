@@ -121,7 +121,7 @@ public class Principal {
         System.out.print("INGRESE LA SIGLA DEL IDIOMA EN EL QUE DESEA BUSCAR LIBROS: ");
         var siglaIdioma = teclado.nextLine();
 
-        List<Libro> listaLibros = repositorioLibro.findAllByIdioma(siglaIdioma.toLowerCase());
+        List<Libro> listaLibros = repositorioLibro.getLibrosEscritosEnIdioma(siglaIdioma.toLowerCase());
         if (!listaLibros.isEmpty()) {
             System.out.println("LA CANTIDAD DE LIBROS ENCONTRADOS EN ESE IDIOMA (" + siglaIdioma.toUpperCase() + ") ES DE: " + listaLibros.size());
             listaLibros.stream()
