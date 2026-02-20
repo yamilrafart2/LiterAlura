@@ -83,7 +83,7 @@ public class Principal {
                     case 5:
                         System.out.println("==============================================");
                         System.out.println("\n====================== 5. ====================");
-
+                        mostrarMenuIdiomas();
                         System.out.println("==============================================");
                         break;
                     case 0:
@@ -100,6 +100,37 @@ public class Principal {
                 }
             }
 
+    }
+
+    /**
+     * Muestra un submenú con opciones de idiomas, solicita al usuario
+     * la sigla correspondiente y consulta la base de datos para mostrar los libros
+     * encontrados, ordenados por cantidad de descargas de mayor a menor.
+     */
+    private void mostrarMenuIdiomas() {
+        System.out.println( """
+                            ---------- LISTA DE IDIOMAS ----------
+                            ES - ESPAÑOL
+                            EN - INGLÉS
+                            FR - FRANCÉS
+                            PT - PORTUGUÉS
+                            --------------------------------------
+                            """)
+        ;
+
+        System.out.print("INGRESE LA SIGLA DEL IDIOMA EN EL QUE DESEA BUSCAR LIBROS: ");
+        var siglaIdioma = teclado.nextLine();
+
+        List<Libro> listaLibros = repositorioLibro.findAllByIdioma(siglaIdioma.toLowerCase());
+        if (!listaLibros.isEmpty()) {
+            System.out.println("LA CANTIDAD DE LIBROS ENCONTRADOS EN ESE IDIOMA (" + siglaIdioma.toUpperCase() + ") ES DE: " + listaLibros.size());
+            listaLibros.stream()
+                    .sorted(Comparator.comparing(Libro::getTotalDescargas).reversed())
+                    .forEach(System.out::println)
+            ;
+        } else {
+            System.out.println("NO EXISTEN LIBROS REGISTRADOS EN ESE IDIOMA (" + siglaIdioma.toUpperCase() + ")!");
+        }
     }
 
     /**
