@@ -71,5 +71,90 @@ mvn spring-boot:run
 * **Programación Funcional:** Uso de Lambdas, Streams API y DoubleSummaryStatistics para la manipulación y análisis de colecciones en memoria.
 * **UX y Manejo de Errores:** Implementación de bloques try-catch y validaciones estrictas para evitar cierres inesperados (ej. InputMismatchException) y garantizar una experiencia de usuario fluida en la consola.
 
+## 📊 Diagramas de Arquitectura
+
+Los siguientes diagramas ilustran la estructura interna de la base de datos y la relación entre los componentes de software del proyecto.
+
+### 1. Diagrama de Base de Datos (Entity-Relationship)
+Muestra la relación **1:N** entre `autores` y `libros`, gestionada por Spring Data JPA, así como la tabla secundaria `libro_resumen` generada para almacenar la colección de traducciones.
+
+```mermaid
+erDiagram
+    AUTORES ||--o{ LIBROS : escribe
+    AUTORES {
+        BigInt id PK
+        String nombre "Unique"
+        Integer fecha_nacimiento
+        Integer fecha_fallecimiento
+    }
+    LIBROS {
+        BigInt id PK
+        String titulo "Unique"
+        String idioma
+        Double total_descargas
+        BigInt autor_id FK
+    }
+    LIBROS ||--o{ LIBRO_RESUMEN : contiene
+    LIBRO_RESUMEN {
+        BigInt libro_id FK
+        String resumen "TEXT"
+    }
+```
+
+### 2. Diagrama de Clases (Estructura Principal)
+Representación de las clases principales de Modelo, las interfaces Repositorio, y la clase `Principal` que orquesta la lógica de negocio.
+
+```mermaid
+classDiagram
+    class LiteraluraApplication {
+        +main()
+        +run()
+    }
+    class Principal {
+        -Scanner teclado
+        -ConsumoAPI consumoAPI
+        -ConvierteDatos conversor
+        -ILibroRepository repositorioLibro
+        -IAutorRepository repositorioAutor
+        +mostrarMenu()
+        -buscarLibroAPI()
+        -mostrarEstadisticasDescargas()
+        -buscarAutorPorNombre()
+    }
+    class ILibroRepository {
+        <<Interface>>
+        +getLibrosEscritosEnIdioma(String idioma)
+    }
+    class IAutorRepository {
+        <<Interface>>
+        +getAutoresVivosEnAnio(Integer anio)
+        +getAutorPorNombre(String nombre)
+        +getAutoresPorFechaNacimiento(Integer anio)
+    }
+    class Libro {
+        -Long id
+        -String titulo
+        -Autor autor
+        -List~String~ resumen
+        -String idioma
+        -Double totalDescargas
+    }
+    class Autor {
+        -Long id
+        -String nombre
+        -Integer fechaNacimiento
+        -Integer fechaFallecimiento
+        -List~Libro~ listaLibros
+    }
+
+    LiteraluraApplication ..> Principal : Instancia y Ejecuta
+    Principal --> ILibroRepository : Usa
+    Principal --> IAutorRepository : Usa
+    Principal --> ConsumoAPI : Usa
+    ILibroRepository ..> Libro : Gestiona
+    IAutorRepository ..> Autor : Gestiona
+    Autor "1" *-- "N" Libro : Escribe
+```
+
 ---
 *Desarrollado por Desarrollado por [Yamil Rafart](https://github.com/yamilrafart2)*
