@@ -59,13 +59,13 @@ public class Libro {
     public String toString() {
         return
                 """
-                ---------- LIBRO ----------
-                Título: %s
-                Autor: %s
-                Idioma: %s
-                Descargas: %.0f
-                Resumen: %s
-                ---------------------------
+                -------------------- LIBRO --------------------
+                TÍTULO: %s
+                AUTOR: %s
+                IDIOMA: %s
+                DESCARGAS: %.0f
+                RESUMEN: %s
+                -----------------------------------------------
                 """.formatted(
                         titulo,
                         (autor != null ? autor.getNombre() : "Desconocido"),

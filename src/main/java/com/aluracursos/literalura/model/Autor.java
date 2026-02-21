@@ -52,12 +52,12 @@ public class Autor {
         ;
 
         return """
-                ---------- AUTOR ----------
-                Nombre: %s
-                Fecha de nacimiento: %s
-                Fecha de fallecimiento: %s
-                Libros: %s
-                ---------------------------
+                -------------------- AUTOR --------------------
+                NOMBRE: %s
+                AÑO DE NACIMIENTO: %s
+                AÑO DE FALLECIMIENTO: %s
+                LIBROS: %s
+                -----------------------------------------------
                 """.formatted(
                 nombre,
                 fechaNacimiento != null ? fechaNacimiento : "Desconocida",

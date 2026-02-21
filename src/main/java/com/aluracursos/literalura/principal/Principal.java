@@ -63,6 +63,7 @@ public class Principal {
                 try {
                     opcion = teclado.nextInt();
                     teclado.nextLine();
+                    System.out.println("==============================================");
                 } catch (InputMismatchException e) {
                     System.out.println("==============================================");
                     System.out.println("\n==============================================");
@@ -75,70 +76,59 @@ public class Principal {
 
                 switch (opcion) {
                     case 1:
-                        System.out.println("==============================================");
                         System.out.println("\n====================== 1. ====================");
                         buscarLibroAPI();
                         System.out.println("==============================================");
                         break;
                     case 2:
-                        System.out.println("==============================================");
                         System.out.println("\n====================== 2. ====================");
                         mostrarLibrosRegistrados();
                         System.out.println("==============================================");
                         break;
                     case 3:
-                        System.out.println("==============================================");
                         System.out.println("\n====================== 3. ====================");
                         mostrarAutoresRegistrados();
                         System.out.println("==============================================");
                         break;
                     case 4:
-                        System.out.println("==============================================");
                         System.out.println("\n====================== 4. ====================");
                         listarAutoresVivosEnAnio();
                         System.out.println("==============================================");
                         break;
                     case 5:
-                        System.out.println("==============================================");
                         System.out.println("\n====================== 5. ====================");
                         mostrarMenuIdiomas();
                         System.out.println("==============================================");
                         break;
                     case 6:
-                        System.out.println("==============================================");
                         System.out.println("\n====================== 6. ====================");
                         mostrarEstadisticasDescargas();
                         System.out.println("==============================================");
                         break;
                     case 7:
-                        System.out.println("==============================================");
                         System.out.println("\n====================== 7. ====================");
                         mostrarTop10LibrosMasDescargados();
                         System.out.println("==============================================");
                         break;
                     case 8:
-                        System.out.println("==============================================");
                         System.out.println("\n====================== 8. ====================");
                         buscarAutorPorNombre();
                         System.out.println("==============================================");
                         break;
                     case 9:
-                        System.out.println("==============================================");
                         System.out.println("\n====================== 9. ====================");
                         buscarAutorPorAnioNacimiento();
                         System.out.println("==============================================");
                         break;
                     case 0:
-                        System.out.println("==============================================");
                         System.out.println("\n==============================================");
                         System.out.println("CERRANDO LA APLICACIÓN...");
                         System.out.println("==============================================");
                         break;
                     default:
-                        System.out.println("==============================================");
                         System.out.println("\n==============================================");
                         System.out.println("ERROR: POR FAVOR, INGRESE UNA OPCIÓN VÁLIDA!");
-                        System.out.println("==============================================");
+                        System.out.println("==============================================\n");
                 }
             }
 
@@ -157,10 +147,8 @@ public class Principal {
             anioBuscado = teclado.nextInt();
             teclado.nextLine();
         } catch (InputMismatchException e) {
-            System.out.println("==============================================");
             System.out.println("\n==============================================");
             System.out.println("ERROR: EL AÑO DEBE SER UN NÚMERO (EJEMPLO: 1800)!");
-            System.out.println("==============================================");
             teclado.nextLine();
             return;
         }
@@ -168,13 +156,13 @@ public class Principal {
 
         List<Autor> autoresEncontrados = repositorioAutor.getAutoresPorFechaNacimiento(anioBuscado);
         if (!autoresEncontrados.isEmpty()) {
-            System.out.println("LA CANTIDAD DE AUTORES QUE NACIERON EN EL AÑO " + anioBuscado + " ES DE: " +  autoresEncontrados.size());
+            System.out.println("\nLA CANTIDAD DE AUTORES QUE NACIERON EN EL AÑO " + anioBuscado + " ES DE: " +  autoresEncontrados.size() + "\n");
             autoresEncontrados.stream()
                     .sorted(Comparator.comparing(Autor::getNombre))
                     .forEach(System.out::println)
             ;
         } else {
-            System.out.println("NO EXISTEN AUTORES REGISTRADOS QUE HAYAN NACIDO EN EL AÑO " + anioBuscado + "!");
+            System.out.println("\nNO EXISTEN AUTORES REGISTRADOS QUE HAYAN NACIDO EN EL AÑO " + anioBuscado + "!");
         }
     }
 
@@ -189,10 +177,10 @@ public class Principal {
         List<Autor> autoresEncontrados = repositorioAutor.getAutorPorNombre(nombreAutor);
 
         if (!autoresEncontrados.isEmpty()) {
-            System.out.println("LA CANTIDAD DE AUTORES ENCONTRADOS CON ESE NOMBRE ES DE: " + autoresEncontrados.size());
+            System.out.println("\nLA CANTIDAD DE AUTORES ENCONTRADOS CON ESE NOMBRE ES DE: " + autoresEncontrados.size() + "\n");
             autoresEncontrados.forEach(System.out::println);
         } else {
-            System.out.println("NO SE ENCONTRARON AUTORES CON ESE NOMBRE!");
+            System.out.println("\nNO SE ENCONTRARON AUTORES CON ESE NOMBRE!");
         }
     }
 
@@ -206,7 +194,7 @@ public class Principal {
         if (listaLibros.isEmpty()) {
             System.out.println("NO EXISTEN LIBROS REGISTRADOS!");
         } else {
-            System.out.println("---------- TOP 10 LIBROS MÁS DESCARGADOS ----------");
+            System.out.println("---------- TOP 10 LIBROS MÁS DESCARGADOS ----------\n");
             listaLibros.stream()
                     .sorted(Comparator.comparing(Libro::getTotalDescargas).reversed())
                     .limit(10)
@@ -241,12 +229,12 @@ public class Principal {
      */
     private void mostrarMenuIdiomas() {
         System.out.println( """
-                            ---------- LISTA DE IDIOMAS ----------
+                            --------------- LISTA DE IDIOMAS ---------------
                             ES - ESPAÑOL
                             EN - INGLÉS
                             FR - FRANCÉS
                             PT - PORTUGUÉS
-                            --------------------------------------
+                            ------------------------------------------------
                             """)
         ;
 
@@ -257,22 +245,21 @@ public class Principal {
         List<String> idiomasValidos = List.of("es", "en", "fr", "pt");
 
         if (!idiomasValidos.contains(siglaIdioma.toLowerCase())) {
-            System.out.println("==============================================");
+            System.out.println("\n==============================================");
             System.out.println("ERROR: IDIOMA NO RECONOCIDO. POR FAVOR, INGRESE ES, EN, FR O PT!");
-            System.out.println("==============================================");
             return;
         }
         // --- FIN DE VALIDACIÓN ---
 
         List<Libro> listaLibros = repositorioLibro.getLibrosEscritosEnIdioma(siglaIdioma.toLowerCase());
         if (!listaLibros.isEmpty()) {
-            System.out.println("LA CANTIDAD DE LIBROS ENCONTRADOS EN ESE IDIOMA (" + siglaIdioma.toUpperCase() + ") ES DE: " + listaLibros.size());
+            System.out.println("\nLA CANTIDAD DE LIBROS ENCONTRADOS EN ESE IDIOMA (" + siglaIdioma.toUpperCase() + ") ES DE: " + listaLibros.size() + "\n");
             listaLibros.stream()
                     .sorted(Comparator.comparing(Libro::getTotalDescargas).reversed())
                     .forEach(System.out::println)
             ;
         } else {
-            System.out.println("NO EXISTEN LIBROS REGISTRADOS EN ESE IDIOMA (" + siglaIdioma.toUpperCase() + ")!");
+            System.out.println("\nNO EXISTEN LIBROS REGISTRADOS EN ESE IDIOMA (" + siglaIdioma.toUpperCase() + ")!");
         }
     }
 
@@ -289,10 +276,8 @@ public class Principal {
             anioBuscado = teclado.nextInt();
             teclado.nextLine();
         } catch (InputMismatchException e) {
-            System.out.println("==============================================");
             System.out.println("\n==============================================");
             System.out.println("ERROR: EL AÑO DEBE SER UN NÚMERO (EJEMPLO: 1800)!");
-            System.out.println("==============================================");
             teclado.nextLine();
             return;
         }
@@ -300,13 +285,13 @@ public class Principal {
 
         List<Autor> autoresVivos = repositorioAutor.getAutoresVivosEnAnio(anioBuscado);
         if (!autoresVivos.isEmpty()) {
-            System.out.println("LA CANTIDAD DE AUTORES VIVOS EN EL AÑO " + anioBuscado + " ES DE: " +  autoresVivos.size());
+            System.out.println("\nLA CANTIDAD DE AUTORES VIVOS EN EL AÑO " + anioBuscado + " ES DE: " +  autoresVivos.size() + "\n");
             autoresVivos.stream()
                     .sorted(Comparator.comparing(Autor::getFechaNacimiento).reversed())
                     .forEach(System.out::println)
             ;
         } else {
-            System.out.println("NO EXISTEN AUTORES REGISTRADOS QUE ESTÉN VIVOS EN EL AÑO " + anioBuscado + "!");
+            System.out.println("\nNO EXISTEN AUTORES REGISTRADOS QUE ESTÉN VIVOS EN EL AÑO " + anioBuscado + "!");
         }
 
     }
@@ -319,7 +304,7 @@ public class Principal {
         var listaAutores = repositorioAutor.findAll();
 
         if (!listaAutores.isEmpty()) {
-            System.out.println("CANTIDAD DE AUTORES REGISTRADOS: " + listaAutores.size());
+            System.out.println("CANTIDAD DE AUTORES REGISTRADOS: " + listaAutores.size() + "\n");
             listaAutores.stream()
                     .sorted(Comparator.comparing(Autor::getNombre))
                     .forEach(System.out::println)
@@ -338,7 +323,7 @@ public class Principal {
         var listaLibros = repositorioLibro.findAll();
 
         if (!listaLibros.isEmpty()) {
-            System.out.println("CANTIDAD DE LIBROS REGISTRADOS: " + listaLibros.size());
+            System.out.println("CANTIDAD DE LIBROS REGISTRADOS: " + listaLibros.size() + "\n");
             listaLibros.stream()
                     .sorted(Comparator.comparing(Libro::getTotalDescargas).reversed())
                     .forEach(System.out::println);
@@ -363,7 +348,7 @@ public class Principal {
             Libro libro = new Libro(datosLibro.get());
             repositorioLibro.save(libro);
             System.out.println("LIBRO REGISTRADO!");
-            System.out.println(libro + "\n");
+            System.out.println(libro);
 
         } else {
             System.out.println("LIBRO NO ENCONTRADO!");
@@ -381,7 +366,7 @@ public class Principal {
         System.out.print("INGRESE EL NOMBRE DEL LIBRO QUE DESEA BUSCAR: ");
         var nombreLibro = teclado.nextLine();
         var json = consumoAPI.obtenerDatos(URL_BASE + "?search=" + nombreLibro.replace(" ", "+"));
-        System.out.println(json + "\n");
+        //System.out.println(json + "\n");
 
         var resultados = conversor.obtenerDatos(json,  DatosResultados.class);
         return resultados.listaLibros().stream()
