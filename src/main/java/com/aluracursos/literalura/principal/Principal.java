@@ -180,19 +180,19 @@ public class Principal {
 
     /**
      * Solicita al usuario el nombre (o parte del nombre) de un autor,
-     * consulta la base de datos y muestra la información del autor si este
-     * se encuentra registrado.
+     * consulta la base de datos y muestra la información de los autores si
+     * se encuentran registrados.
      */
     private void buscarAutorPorNombre() {
         System.out.print("INGRESE EL NOMBRE DEL AUTOR QUE DESEA BUSCAR: ");
         var nombreAutor = teclado.nextLine();
-        Optional<Autor> autorBuscado = repositorioAutor.getAutorPorNombre(nombreAutor);
+        List<Autor> autoresEncontrados = repositorioAutor.getAutorPorNombre(nombreAutor);
 
-        if (autorBuscado.isPresent()) {
-            System.out.println("AUTOR ENCONTRADO!");
-            System.out.println(autorBuscado.get());
+        if (!autoresEncontrados.isEmpty()) {
+            System.out.println("LA CANTIDAD DE AUTORES ENCONTRADOS CON ESE NOMBRE ES DE: " + autoresEncontrados.size());
+            autoresEncontrados.forEach(System.out::println);
         } else {
-            System.out.println("AUTOR NO ENCONTRADO!");
+            System.out.println("NO SE ENCONTRARON AUTORES CON ESE NOMBRE!");
         }
     }
 

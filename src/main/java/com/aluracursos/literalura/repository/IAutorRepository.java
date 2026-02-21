@@ -34,25 +34,25 @@ public interface IAutorRepository extends JpaRepository<Autor, Long> {
     List<Autor> getAutoresVivosEnAnio(Integer anio);
 
     /**
-     * Busca un autor en la base de datos cuyo nombre contenga la cadena de texto
+     * Busca autores en la base de datos cuyo nombre contenga la cadena de texto
      * proporcionada, ignorando diferencias entre mayúsculas y minúsculas.
      * Utiliza Derived Queries de Spring Data JPA.
      *
      * @param nombre Cadena de texto a buscar dentro del nombre del autor.
-     * @return Un Optional que contiene el Autor si se encuentra, o vacío si no.
+     * @return Una lista de autores que coinciden con la búsqueda.
      */
-    Optional<Autor> findByNombreContainingIgnoreCase(String nombre);
+    List<Autor> findByNombreContainingIgnoreCase(String nombre);
 
     /**
-     * Busca un autor en la base de datos cuyo nombre contenga la cadena de texto
+     * Busca autores en la base de datos cuyo nombre contenga la cadena de texto
      * proporcionada, ignorando diferencias entre mayúsculas y minúsculas.
      * Utiliza JPQL (Java Persistence Query Language) con el operador ILIKE de PostgreSQL.
      *
      * @param nombre Cadena de texto a buscar dentro del nombre del autor.
-     * @return Un Optional que contiene el Autor si se encuentra, o vacío si no.
+     * @return Una lista de autores que coinciden con la búsqueda.
      */
     @Query("SELECT a FROM Autor a WHERE a.nombre ILIKE %:nombre%")
-    Optional<Autor> getAutorPorNombre(String nombre);
+    List<Autor> getAutorPorNombre(String nombre);
 
     /**
      * Busca autores en la base de datos que hayan nacido en un año específico.
